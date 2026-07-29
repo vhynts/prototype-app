@@ -26,9 +26,9 @@ class RBACServiceProvider extends ModuleServiceProvider
         // Register Spatie middleware aliases
         $this->app->booted(function () {
             $router = $this->app->make(Router::class);
-            $router->aliasMiddleware('role', \Spatie\Permission\Middlewares\RoleMiddleware::class);
-            $router->aliasMiddleware('permission', \Spatie\Permission\Middlewares\PermissionMiddleware::class);
-            $router->aliasMiddleware('role_or_permission', \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class);
+            $router->aliasMiddleware('role', \Spatie\Permission\Middleware\RoleMiddleware::class);
+            $router->aliasMiddleware('permission', \Spatie\Permission\Middleware\PermissionMiddleware::class);
+            $router->aliasMiddleware('role_or_permission', \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class);
         });
     }
 }
