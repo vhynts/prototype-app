@@ -12,9 +12,15 @@ class PermissionController
     /**
      * Tampilkan daftar permissions.
      */
-    public function index(): View
+    public function index(\Illuminate\Http\Request $request): View
     {
-        $permissions = Permission::all();
+        $query = Permission::query();
+        
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $permissions = $query->paginate(15)->withQueryString();
 
         return view('rbac::permissions.index', compact('permissions'));
     }

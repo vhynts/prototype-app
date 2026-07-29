@@ -15,11 +15,18 @@ class RoleController
     /**
      * Tampilkan daftar roles.
      */
-    public function index(): View
+    public function index(\Illuminate\Http\Request $request): View
     {
-        $roles = Role::with('permissions')->get();
+        $query = Role::with('permissions');
+        
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
 
-        return view('rbac::roles.index', compact('roles'));
+        $roles = $query->paginate(10)->withQueryString();
+        $totalPermissions = Permission::count();
+
+        return view('rbac::roles.index', compact('roles', 'totalPermissions'));
     }
 
     /**
