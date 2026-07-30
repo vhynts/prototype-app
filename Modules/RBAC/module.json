@@ -1,0 +1,12 @@
+{
+    "name": "RBAC",
+    "alias": "rbac",
+    "description": "Role-Based Access Control module",
+    "keywords": [],
+    "priority": 5,
+    "providers": [
+        "Modules\\RBAC\\Providers\\RBACServiceProvider"
+    ],
+    "files": [],
+    "requires": ["User"]
+}

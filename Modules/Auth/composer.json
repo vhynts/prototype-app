@@ -1,0 +1,9 @@
+{
+    "name": "modules/auth",
+    "description": "Authentication module",
+    "autoload": {
+        "psr-4": {
+            "Modules\\Auth\\": "app/"
+        }
+    }
+}

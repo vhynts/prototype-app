@@ -1,0 +1,10 @@
+{
+    "name": "modules/rbac",
+    "description": "Role-Based Access Control module",
+    "autoload": {
+        "psr-4": {
+            "Modules\\RBAC\\": "app/",
+            "Modules\\RBAC\\Database\\Seeders\\": "database/seeders/"
+        }
+    }
+}
