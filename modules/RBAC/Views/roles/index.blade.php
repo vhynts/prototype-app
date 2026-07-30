@@ -9,13 +9,13 @@
             <h2 class="text-xl font-bold text-slate-900">Manage Roles</h2>
             <p class="text-sm text-slate-500 mt-1">Configure user roles and their associated permissions.</p>
         </div>
-        <a href="{{ route('admin.roles.create') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-xl hover:bg-indigo-700 transition-colors shadow-sm shadow-indigo-200">
+        <a href="{{ route('admin.roles.create') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-xl hover:bg-indigo-700 transition-colors shadow-xs shadow-indigo-200">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             Add New Role
         </a>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-xs border border-slate-100 overflow-hidden">
         {{-- Toolbar: Filter & Search --}}
         <div class="px-5 py-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <form method="GET" action="{{ route('admin.roles.index') }}" class="relative max-w-sm w-full">

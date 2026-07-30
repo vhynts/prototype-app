@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-xs border border-slate-100 overflow-hidden">
         {{-- Toolbar: Filter & Search --}}
         <div class="px-5 py-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <form method="GET" action="{{ route('admin.permissions.index') }}" class="relative max-w-sm w-full">
