@@ -47,7 +47,7 @@
                 
                 {{-- General --}}
                 <div>
-                    <h3 class="px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3">Umum</h3>
+                    <h3 class="px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3">General</h3>
                     <nav class="space-y-1">
                         <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors {{ request()->routeIs('dashboard') ? 'font-semibold bg-indigo-50 text-indigo-700' : 'font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-50' }}">
                             <svg class="w-5 h-5 {{ request()->routeIs('dashboard') ? 'text-indigo-600' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -93,8 +93,13 @@
                 {{-- OTHERS --}}
                 @role(['super-admin', 'admin'])
                 <div>
-                    <h3 class="px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3">SETTING</h3>
+                    <h3 class="px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-3">Settings</h3>
                     <nav class="space-y-1">
+                        <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors {{ request()->routeIs('admin.users.*') ? 'font-semibold bg-indigo-50 text-indigo-700' : 'font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-50' }}">
+                            <svg class="w-5 h-5 {{ request()->routeIs('admin.users.*') ? 'text-indigo-600' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+                            Users
+                        </a>
+                        
                         @can('manage-roles')
                         <a href="{{ route('admin.roles.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-colors {{ request()->routeIs('admin.roles.*') ? 'font-semibold bg-indigo-50 text-indigo-700' : 'font-medium text-slate-500 hover:text-slate-900 hover:bg-slate-50' }}">
                             <svg class="w-5 h-5 {{ request()->routeIs('admin.roles.*') ? 'text-indigo-600' : 'text-slate-400' }}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>
@@ -175,31 +180,38 @@
                     </button>
 
                     {{-- Profile Dropdown --}}
-                    <div class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-1 rounded-full pr-3 transition-colors">
-                        <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::check() ? Auth::user()->name : 'User') }}&color=4F46E5&background=EEF2FF&bold=true" alt="Profile" class="w-8 h-8 rounded-full">
-                        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    <div class="relative" x-data="{ open: false }" @click.away="open = false">
+                        <button @click="open = !open" class="flex items-center gap-2 cursor-pointer hover:bg-slate-50 p-1 rounded-full pr-3 transition-colors focus:outline-none">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode(Auth::check() ? Auth::user()->name : 'User') }}&color=4F46E5&background=EEF2FF&bold=true" alt="Profile" class="w-8 h-8 rounded-full">
+                            <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+
+                        <div x-show="open" 
+                            x-transition:enter="transition ease-out duration-100" 
+                            x-transition:enter-start="transform opacity-0 scale-95" 
+                            x-transition:enter-end="transform opacity-100 scale-100" 
+                            x-transition:leave="transition ease-in duration-75" 
+                            x-transition:leave-start="transform opacity-100 scale-100" 
+                            x-transition:leave-end="transform opacity-0 scale-95" 
+                            class="absolute right-0 w-48 mt-2 origin-top-right bg-white border border-slate-100 rounded-xl shadow-sm focus:outline-none z-50"
+                            style="display: none;">
+                            <div class="py-1">
+                                <!-- <a href="#" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 transition-colors">Profile</a> -->
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+                                        Sign out
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </header>
 
             {{-- Page Content --}}
             <main class="flex-1 overflow-y-auto bg-slate-50 p-6 lg:p-8">
-                @if (session('success'))
-                    <div class="mb-6 rounded-xl bg-green-50 p-4 text-sm text-green-700 flex items-start gap-3">
-                        <svg class="h-5 w-5 text-green-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                        </svg>
-                        {{ session('success') }}
-                    </div>
-                @endif
-                @if (session('error'))
-                    <div class="mb-6 rounded-xl bg-red-50 p-4 text-sm text-red-700 flex items-start gap-3">
-                        <svg class="h-5 w-5 text-red-400 shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                        </svg>
-                        {{ session('error') }}
-                    </div>
-                @endif
+
 
                 @yield('content')
             </main>
@@ -207,5 +219,51 @@
     </div>
 
     @stack('scripts')
+
+    {{-- Global Toast Notification --}}
+    @if (session('success') || session('error'))
+    <div x-data="{ show: true }" 
+         x-init="setTimeout(() => show = false, 4000)"
+         x-show="show"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 translate-x-8"
+         x-transition:enter-end="opacity-100 translate-x-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 translate-x-0"
+         x-transition:leave-end="opacity-0 translate-x-8"
+         class="fixed top-6 right-6 z-50 flex items-start max-w-sm w-full bg-white border border-slate-100 rounded-2xl shadow-xl shadow-slate-200/50 p-4"
+         style="display: none;">
+        
+        @if (session('success'))
+            <div class="flex items-center gap-4 w-full">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-emerald-50">
+                    <svg class="h-5 w-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-sm font-semibold text-slate-900">Success</h3>
+                    <p class="text-sm text-slate-500">{{ session('success') }}</p>
+                </div>
+                <button @click="show = false" class="text-slate-400 hover:text-slate-600 shrink-0 self-start mt-0.5">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="flex items-center gap-4 w-full">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-50">
+                    <svg class="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-sm font-semibold text-slate-900">Error</h3>
+                    <p class="text-sm text-slate-500">{{ session('error') }}</p>
+                </div>
+                <button @click="show = false" class="text-slate-400 hover:text-slate-600 shrink-0 self-start mt-0.5">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+            </div>
+        @endif
+    </div>
+    @endif
 </body>
 </html>

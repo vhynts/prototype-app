@@ -24,7 +24,8 @@
             <p class="text-sm text-slate-500 mt-1">Modify this role's name and its specific permissions.</p>
         </div>
 
-        <form method="POST" action="{{ route('admin.roles.update', $role) }}" class="p-6 space-y-8" x-data="{
+        <form method="POST" action="{{ route('admin.roles.update', $role) }}" class="p-6 space-y-8" @submit="submitting = true" x-data="{
+            submitting: false,
             selected: {{ json_encode(old('permissions', $rolePermissions)) }},
             allPermissions: {{ json_encode($permissions->pluck('name')) }},
             groupPermissions: {{ json_encode($groupedPermissions->map->pluck('name')) }},
@@ -120,10 +121,11 @@
                     class="px-5 py-2.5 text-sm font-semibold text-slate-600 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 hover:text-slate-900 transition-colors">
                     Cancel
                 </a>
-                <button type="submit"
-                    class="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-white bg-indigo-600 border border-transparent rounded-xl hover:bg-indigo-700 transition-colors shadow-xs shadow-indigo-200">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                    Update Role
+                <button type="submit" :disabled="submitting"
+                    class="inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-bold text-white bg-indigo-600 border border-transparent rounded-xl hover:bg-indigo-700 transition-colors shadow-xs shadow-indigo-200 disabled:opacity-75 disabled:cursor-wait">
+                    <svg x-show="!submitting" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <svg x-show="submitting" class="w-4 h-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style="display: none;"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                    <span x-text="submitting ? 'Updating...' : 'Update Role'">Update Role</span>
                 </button>
             </div>
         </form>
