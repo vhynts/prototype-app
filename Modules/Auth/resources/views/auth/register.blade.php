@@ -1,95 +1,88 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <h1 class="text-center text-2xl font-bold text-[#111827]">
-            {{ config('app.name', 'Laravel') }}
-        </h1>
-        <h2 class="mt-2 text-center text-sm text-[#6B7280]">
-            Buat akun baru
-        </h2>
-    </div>
+<div class="bg-gradient-to-br from-slate-100 via-indigo-50 to-blue-50 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950/40 font-sans antialiased min-h-screen flex w-full relative">
+    <div class="flex w-full flex-col items-center justify-center px-6 py-12">
+        <div class="w-full max-w-md rounded-2xl bg-white dark:bg-slate-900 border border-transparent dark:border-slate-800 px-6 py-8 shadow-xl shadow-indigo-100/50 dark:shadow-none sm:px-8">
+            <div class="space-y-6">
+                <div class="text-center">
+                    <h2 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Buat Akun Baru</h2>
+                    <p class="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
+                        Daftar untuk memulai menggunakan aplikasi
+                    </p>
+                </div>
 
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div class="bg-white py-8 px-6 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)] rounded-xl">
-            <form method="POST" action="{{ route('register') }}" class="space-y-6">
-                @csrf
+                <form method="POST" action="{{ route('register') }}" class="space-y-4" x-data="{ loading: false }" @submit="loading = true">
+                    @csrf
 
-                {{-- Name --}}
-                <div>
-                    <label for="name" class="block text-sm font-medium text-[#111827]">
-                        Nama
-                    </label>
-                    <div class="mt-1">
+                    {{-- Name --}}
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                            Nama Lengkap
+                        </label>
                         <input id="name" name="name" type="text" autocomplete="name" required
                             value="{{ old('name') }}"
-                            class="block w-full rounded-lg border border-[#E5E7EB] px-3 py-2 text-[#111827] shadow-sm placeholder:text-[#6B7280] focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 focus:outline-none sm:text-sm @error('name') border-[#EF4444] @enderror"
-                            placeholder="Nama lengkap">
+                            class="block w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 px-4 py-2.5 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 focus:outline-none sm:text-sm transition-colors @error('name') border-red-500 focus:border-red-500 focus:ring-red-500/20 @enderror"
+                            placeholder="John Doe">
+                        @error('name')
+                            <p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
-                    @error('name')
-                        <p class="mt-1 text-sm text-[#EF4444]">{{ $message }}</p>
-                    @enderror
-                </div>
 
-                {{-- Email --}}
-                <div>
-                    <label for="email" class="block text-sm font-medium text-[#111827]">
-                        Email
-                    </label>
-                    <div class="mt-1">
+                    {{-- Email --}}
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                            Email
+                        </label>
                         <input id="email" name="email" type="email" autocomplete="email" required
                             value="{{ old('email') }}"
-                            class="block w-full rounded-lg border border-[#E5E7EB] px-3 py-2 text-[#111827] shadow-sm placeholder:text-[#6B7280] focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 focus:outline-none sm:text-sm @error('email') border-[#EF4444] @enderror"
+                            class="block w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 px-4 py-2.5 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 focus:outline-none sm:text-sm transition-colors @error('email') border-red-500 focus:border-red-500 focus:ring-red-500/20 @enderror"
                             placeholder="email@example.com">
+                        @error('email')
+                            <p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
-                    @error('email')
-                        <p class="mt-1 text-sm text-[#EF4444]">{{ $message }}</p>
-                    @enderror
-                </div>
 
-                {{-- Password --}}
-                <div>
-                    <label for="password" class="block text-sm font-medium text-[#111827]">
-                        Password
-                    </label>
-                    <div class="mt-1">
+                    {{-- Password --}}
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                            Password
+                        </label>
                         <input id="password" name="password" type="password" autocomplete="new-password" required
-                            class="block w-full rounded-lg border border-[#E5E7EB] px-3 py-2 text-[#111827] shadow-sm placeholder:text-[#6B7280] focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 focus:outline-none sm:text-sm @error('password') border-[#EF4444] @enderror"
+                            class="block w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 px-4 py-2.5 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 focus:outline-none sm:text-sm transition-colors @error('password') border-red-500 focus:border-red-500 focus:ring-red-500/20 @enderror"
                             placeholder="Minimal 8 karakter">
+                        @error('password')
+                            <p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                        @enderror
                     </div>
-                    @error('password')
-                        <p class="mt-1 text-sm text-[#EF4444]">{{ $message }}</p>
-                    @enderror
-                </div>
 
-                {{-- Confirm Password --}}
-                <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-[#111827]">
-                        Konfirmasi Password
-                    </label>
-                    <div class="mt-1">
+                    {{-- Confirm Password --}}
+                    <div>
+                        <label for="password_confirmation" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">
+                            Konfirmasi Password
+                        </label>
                         <input id="password_confirmation" name="password_confirmation" type="password" autocomplete="new-password" required
-                            class="block w-full rounded-lg border border-[#E5E7EB] px-3 py-2 text-[#111827] shadow-sm placeholder:text-[#6B7280] focus:border-[#2563EB] focus:ring-2 focus:ring-[#2563EB]/20 focus:outline-none sm:text-sm"
+                            class="block w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/70 px-4 py-2.5 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 focus:outline-none sm:text-sm transition-colors"
                             placeholder="Ulangi password">
                     </div>
-                </div>
 
-                {{-- Submit --}}
-                <div>
-                    <button type="submit"
-                        class="flex w-full justify-center rounded-lg bg-[#2563EB] px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-[#2563EB]/90 focus:outline-none focus:ring-2 focus:ring-[#2563EB]/50 focus:ring-offset-2 transition-colors">
-                        Daftar
-                    </button>
-                </div>
-            </form>
+                    {{-- Submit --}}
+                    <div class="pt-2">
+                        <button type="submit" :disabled="loading"
+                            class="flex w-full justify-center items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-xs shadow-indigo-200 dark:shadow-none hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-600/50 focus:ring-offset-2 transition-colors disabled:opacity-75 disabled:cursor-wait">
+                            <svg x-show="loading" class="w-4 h-4 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" style="display: none;"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                            <span x-text="loading ? 'Mendaftarkan...' : 'Daftar'">Daftar</span>
+                        </button>
+                    </div>
+                </form>
 
-            {{-- Login Link --}}
-            <div class="mt-6 text-center text-sm text-[#6B7280]">
-                Sudah punya akun?
-                <a href="{{ route('login') }}" class="font-medium text-[#2563EB] hover:text-[#2563EB]/80">
-                    Masuk
-                </a>
+                {{-- Login Link --}}
+                <div class="text-center text-sm text-slate-500 dark:text-slate-400">
+                    Sudah punya akun?
+                    <a href="{{ route('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors">
+                        Masuk
+                    </a>
+                </div>
             </div>
         </div>
     </div>
