@@ -7,7 +7,7 @@ namespace Modules\RBAC\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Modules\RBAC\Http\Requests\RoleRequest;
-use Spatie\Permission\Models\Permission;
+use Modules\RBAC\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleController
@@ -34,7 +34,7 @@ class RoleController
      */
     public function create(): View
     {
-        $permissions = Permission::all();
+        $permissions = Permission::orderBy('group')->orderBy('name')->get();
 
         return view('rbac::roles.create', compact('permissions'));
     }
@@ -58,7 +58,7 @@ class RoleController
      */
     public function edit(Role $role): View
     {
-        $permissions = Permission::all();
+        $permissions = Permission::orderBy('group')->orderBy('name')->get();
         $rolePermissions = $role->permissions->pluck('name')->toArray();
 
         return view('rbac::roles.edit', compact('role', 'permissions', 'rolePermissions'));

@@ -5,8 +5,7 @@
 @section('content')
 @php
     $groupedPermissions = $permissions->groupBy(function($permission) {
-        $parts = explode('-', $permission->name);
-        return count($parts) > 1 ? end($parts) : 'others';
+        return $permission->group ?? 'Others';
     });
 @endphp
 
@@ -105,6 +104,9 @@
                                         </div>
                                         <div class="flex flex-col">
                                             <span class="text-sm font-semibold" :class="selected.includes('{{ $permission->name }}') ? 'text-indigo-900 dark:text-indigo-300' : 'text-slate-700 dark:text-slate-300'">{{ $permission->name }}</span>
+                                            @if($permission->description)
+                                                <span class="text-xs text-slate-400 dark:text-slate-500 mt-0.5">{{ $permission->description }}</span>
+                                            @endif
                                         </div>
                                     </label>
                                 @endforeach

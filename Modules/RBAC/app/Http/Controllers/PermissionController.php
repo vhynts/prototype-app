@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\RBAC\Http\Controllers;
 
 use Illuminate\View\View;
-use Spatie\Permission\Models\Permission;
+use Modules\RBAC\Models\Permission;
 
 class PermissionController
 {
@@ -17,10 +17,15 @@ class PermissionController
         $query = Permission::query();
         
         if ($request->has('search') && $request->search != '') {
-            $query->where('name', 'like', '%' . $request->search . '%');
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('group', 'like', '%' . $search . '%')
+                  ->orWhere('description', 'like', '%' . $search . '%');
+            });
         }
 
-        $permissions = $query->paginate(15)->withQueryString();
+        $permissions = $query->orderBy('group')->orderBy('name')->paginate(15)->withQueryString();
 
         return view('rbac::permissions.index', compact('permissions'));
     }

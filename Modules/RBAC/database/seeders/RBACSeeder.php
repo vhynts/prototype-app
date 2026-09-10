@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\RBAC\Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Spatie\Permission\Models\Permission;
+use Modules\RBAC\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Modules\User\Models\User;
 
@@ -19,29 +19,32 @@ class RBACSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create permissions (skip if exists)
+        // Create or update permissions with group and description
         $permissions = [
             // User management
-            'manage-users',
-            'view-users',
-            'create-users',
-            'edit-users',
-            'delete-users',
+            ['name' => 'manage-users', 'group' => 'Users', 'description' => 'Full access to manage all users'],
+            ['name' => 'view-users', 'group' => 'Users', 'description' => 'View users list and details'],
+            ['name' => 'create-users', 'group' => 'Users', 'description' => 'Create new users'],
+            ['name' => 'edit-users', 'group' => 'Users', 'description' => 'Edit existing users'],
+            ['name' => 'delete-users', 'group' => 'Users', 'description' => 'Delete users'],
 
             // Role management
-            'manage-roles',
-            'view-roles',
-            'create-roles',
-            'edit-roles',
-            'delete-roles',
+            ['name' => 'manage-roles', 'group' => 'Roles', 'description' => 'Full access to manage all roles'],
+            ['name' => 'view-roles', 'group' => 'Roles', 'description' => 'View roles list and details'],
+            ['name' => 'create-roles', 'group' => 'Roles', 'description' => 'Create new roles'],
+            ['name' => 'edit-roles', 'group' => 'Roles', 'description' => 'Edit existing roles'],
+            ['name' => 'delete-roles', 'group' => 'Roles', 'description' => 'Delete roles'],
 
             // Permission management
-            'manage-permissions',
-            'view-permissions',
+            ['name' => 'manage-permissions', 'group' => 'Permissions', 'description' => 'Full access to manage permissions'],
+            ['name' => 'view-permissions', 'group' => 'Permissions', 'description' => 'View permissions list'],
         ];
 
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
+            Permission::updateOrCreate(
+                ['name' => $permission['name'], 'guard_name' => 'web'],
+                ['group' => $permission['group'], 'description' => $permission['description']]
+            );
         }
 
         // Create roles and assign permissions
