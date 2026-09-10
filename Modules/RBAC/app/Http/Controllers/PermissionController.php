@@ -25,7 +25,7 @@ class PermissionController
             });
         }
 
-        $permissions = $query->orderBy('group')->orderBy('name')->paginate(15)->withQueryString();
+        $permissions = $query->orderBy('group')->orderBy('name')->paginate(10)->withQueryString();
 
         return view('rbac::permissions.index', compact('permissions'));
     }

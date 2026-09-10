@@ -4,6 +4,7 @@ namespace Modules\RBAC\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Routing\Router;
 
 class RBACServiceProvider extends ServiceProvider
@@ -16,6 +17,11 @@ class RBACServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(module_path('RBAC', 'routes/web.php'));
         }
+
+        // Implicitly grant "super-admin" role all permissions
+        Gate::before(function ($user, string $ability) {
+            return $user->hasRole('super-admin') ? true : null;
+        });
 
         // Register Spatie middleware aliases
         $this->app->booted(function () {

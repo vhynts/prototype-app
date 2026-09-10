@@ -9,10 +9,12 @@
             <h2 class="text-xl font-bold text-slate-900 dark:text-white">Manage Users</h2>
             <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Manage system users and their assigned roles.</p>
         </div>
+        @canany(['create-users', 'manage-users'])
         <a href="{{ route('admin.users.create') }}" class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-indigo-600 border border-transparent rounded-xl hover:bg-indigo-700 transition-colors shadow-xs shadow-indigo-200 dark:shadow-none">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
             Add New User
         </a>
+        @endcanany
     </div>
 
     <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-xs border border-slate-100 dark:border-slate-800 overflow-hidden">
@@ -69,9 +71,13 @@
                             </td>
                             <td class="px-5 py-4 text-right">
                                 <div class="flex items-center justify-end gap-2">
+                                    @canany(['edit-users', 'manage-users'])
                                     <a href="{{ route('admin.users.edit', $user) }}" class="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-950/50 dark:hover:text-indigo-400 rounded-lg transition-colors" title="Edit">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                                     </a>
+                                    @endcanany
+
+                                    @canany(['delete-users', 'manage-users'])
                                     @if (!$user->hasRole('super-admin') && auth()->id() !== $user->id)
                                         <div x-data="{ confirmingDelete: false }" class="inline">
                                             <button @click="confirmingDelete = true" type="button" class="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/50 dark:hover:text-red-400 rounded-lg transition-colors cursor-pointer" title="Delete">
@@ -120,6 +126,7 @@
                                             </template>
                                         </div>
                                     @endif
+                                    @endcanany
                                 </div>
                             </td>
                         </tr>
